@@ -12,15 +12,18 @@ public class Driver {
 
         for(int i = 0; i < 100; ++i) {
             int[] b = createBoard(8);
-            //print(b);
             HillClimbing hc = new HillClimbing(b);
 
             if(hc.solve()){
+                System.out.println();
+                print(b);
+                System.out.println("ORIGINAL BOARD\n");
+
+                print(hc.getBoard());
+                System.out.println("SOLUTION FOUND");
                 ++count;
             }
         }
-
-        System.out.println(count);
     }
 
     public static int[] createBoard(int size){

@@ -7,7 +7,7 @@ import java.util.Collections;
 public class HillClimbing {
 
     private static int[] board;
-    private static int pairs = 0;
+    //private static int pairs = 0;
 
     public HillClimbing(int[] b){
         board = b;
@@ -20,6 +20,8 @@ public class HillClimbing {
     //Else, take the best as new current and repeat
 
     public static boolean solve(){
+        //The arraylist moves stores each different game board
+        //attackingPairs stores the number of attacking queens per board
         ArrayList<int[]> moves = new ArrayList<>();
         ArrayList<Integer> attackingPairs = new ArrayList<>();
         int h = getAttackingPairs(board);
@@ -28,6 +30,7 @@ public class HillClimbing {
             moves.clear();
             attackingPairs.clear();
 
+            //Generating every board that can result from moving any one queen
             for(int i = 0; i < board.length; ++i){
                 for(int j = 0; j < board.length; ++j){
 
@@ -41,17 +44,17 @@ public class HillClimbing {
                 }
             }
 
+            //Obtaining the value of the board with fewest attacking queens
             int min = Collections.min(attackingPairs);
 
             if(min >= h) {
                 break;
             }else{
+                //The index of the lowest attacking queens value related to its corresponding board
                 board = moves.get(attackingPairs.indexOf(min)).clone();
                 h = min;
 
                 if(min == 0) {
-                    Driver.print(board);
-                    System.out.println("SOLUTION FOUND");
                     return true;
                 }
             }
@@ -60,10 +63,13 @@ public class HillClimbing {
         return false;
     }
 
+    //Returns the total number of attacking queens in a given board
     public static int getAttackingPairs(int[] q){
-        pairs = 0;
+        int pairs = 0;
         int relation;
 
+        //Loop checks one column at a time; checks the queens the current
+        //queen may attack to its right horizontally or diagonally
         for(int i = 0; i < q.length; ++i){
             for(int j = i + 1; j < q.length; ++j){
                 relation = j - i;
@@ -73,5 +79,9 @@ public class HillClimbing {
         }
 
         return pairs;
+    }
+
+    public static int[] getBoard(){
+        return board;
     }
 }
