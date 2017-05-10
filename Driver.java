@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -10,20 +11,20 @@ public class Driver {
         Scanner reader = new Scanner(System.in);
         int count = 0;
 
-        for(int i = 0; i < 100; ++i) {
-            int[] b = createBoard(8);
-            HillClimbing hc = new HillClimbing(b);
+        ArrayList<int[]> p = new ArrayList<>();
 
-            if(hc.solve()){
-                System.out.println();
-                print(b);
-                System.out.println("ORIGINAL BOARD\n");
+        int[] one = {2,4,7,4,8,5,5,2};
+        int[] two = {3,2,7,5,2,4,1,1};
+        int[] three = {2,4,4,1,5,1,2,4};
+        int[] four = {3,2,5,4,3,2,1,3};
 
-                print(hc.getBoard());
-                System.out.println("SOLUTION FOUND");
-                ++count;
-            }
-        }
+        p.add(one);
+        p.add(two);
+        p.add(three);
+        p.add(four);
+
+        Genetic g = new Genetic(p);
+        g.solve();
     }
 
     public static int[] createBoard(int size){
