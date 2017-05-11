@@ -11,17 +11,17 @@ public class Driver {
         Scanner reader = new Scanner(System.in);
         int count = 0;
 
-        ArrayList<int[]> p = new ArrayList<>();
+        ArrayList<NQueenBoard> p = new ArrayList<>();
 
         int[] one = {2,4,7,4,8,5,5,2};
         int[] two = {3,2,7,5,2,4,1,1};
         int[] three = {2,4,4,1,5,1,2,4};
         int[] four = {3,2,5,4,3,2,1,3};
 
-        p.add(one);
-        p.add(two);
-        p.add(three);
-        p.add(four);
+        p.add(new NQueenBoard(one));
+        p.add(new NQueenBoard(two));
+        p.add(new NQueenBoard(three));
+        p.add(new NQueenBoard(four));
 
         Genetic g = new Genetic(p);
         g.solve();
