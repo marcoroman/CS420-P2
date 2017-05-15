@@ -36,7 +36,7 @@ public class Driver {
         int sub = -1;
 
         while(sub != 3){
-            System.out.print("\n1) Solve single N-Queen problem (may fail)\n2) Run 200 cases\n3) Back\n>");
+            System.out.print("\n1) Solve single N-Queen problem (may fail)\n2) Run 200 test cases\n3) Back\n>");
             sub = reader.nextInt();
 
             //Option for attempting to solve a single case
@@ -55,23 +55,33 @@ public class Driver {
                     System.out.println("Solution found!");
                 }else
                     System.out.println("Steepest hill-climbing failed to find a solution.");
+
             //Option for running 200 test cases (displays percent of solved cases)
             }else if(sub == 2){
                 System.out.print("\nEnter the number of queens (N): ");
                 int n = reader.nextInt();
                 int count = 0;
+                long start, stop, time = 0;
 
-                System.out.println("Running 200 cases.\n");
+                System.out.println("Running 200 test cases.\n");
 
                 for(int i = 0; i < 200; ++i){
                     int[] board = createBoard(n);
                     HillClimbing hc = new HillClimbing(board);
 
+                    start = System.currentTimeMillis();
+
                     if(hc.solve())
                         ++count;
+
+                    stop = System.currentTimeMillis();
+
+                    time += (stop - start);
                 }
 
                 System.out.println("Steepest hill climbing solved approximately " + (count / 2) + "% of problems.");
+                System.out.println("Average time: " + (time / 200.0) + " milliseconds");
+
             }else{
                 if(sub != 3)
                     System.out.println("Please enter a valid option.");
@@ -103,7 +113,14 @@ public class Driver {
         }
 
         Genetic g = new Genetic(p);
+
+        long start = System.currentTimeMillis();
+
         g.solve();
+
+        long stop = System.currentTimeMillis();
+
+        System.out.println("Total time: " + (stop - start) + " milliseconds");
     }
 
     //Returns a randomly generated board
