@@ -11,12 +11,13 @@ public class Genetic {
     //The fitness array stores the fitness values for the members of the population
     private ArrayList<NQueenBoard> population = new ArrayList<>();
     private int[] pairs, fitness;
-    private int total = 0;
+    private int total = 0, k;
     private Random gen = new Random();
 
     //Constructor; initializing class members
     public Genetic(ArrayList<NQueenBoard> p){
         population = p;
+        k = p.size();
         pairs = new int[p.size()];
         fitness = new int[p.size()];
     }
@@ -26,30 +27,44 @@ public class Genetic {
         ArrayList<NQueenBoard> successors = new ArrayList<>();
         int[] parent1, parent2;
 
-        fitnessFunction();
-        parent1 = selectParent().clone();
-        parent2 = selectParent().clone();
+        while(true) {
+            fitnessFunction();
 
-        successors.add(new NQueenBoard(crossover(parent1, parent2)));
-
-        //FIND A WAY TO POPULATE SUCCESSOR ARRAYLIST USING SELECTION
-        //CROSSOVER, AND MUTATION (start with the first two)
-        //RUN SINGLE CASE FIRST
-        while(!population.isEmpty()){
-            int select = gen.nextInt(population.size());
-            int[] child;
-
-            if(gen.nextBoolean()){
-                child = crossover(parent1, population.get(select).getBoard()).clone();
-            }else{
-                child = crossover(parent2, population.get(select).getBoard()).clone();
+            if(population.get(k - 1).fitness() == 28){
+                Driver.print(population.get(k - 1).getBoard());
+                break;
             }
 
-            population.remove(select);
-            successors.add(new NQueenBoard(child));
-        }
+            parent1 = selectParent().clone();
+            parent2 = selectParent().clone();
 
-        System.out.println(successors.size());
+            successors.add(new NQueenBoard(crossover(parent1, parent2)));
+            population.remove(0);
+
+            //FIND A WAY TO POPULATE SUCCESSOR ARRAYLIST USING SELECTION
+            //CROSSOVER, AND MUTATION (start with the first two)
+            //RUN SINGLE CASE FIRST
+            while (successors.size() < k) {
+                int select = gen.nextInt(population.size());
+                int[] child;
+
+                if (gen.nextBoolean()) {
+                    child = crossover(parent1, population.get(select).getBoard()).clone();
+                } else {
+                    child = crossover(parent2, population.get(select).getBoard()).clone();
+                }
+
+                successors.add(new NQueenBoard(child));
+            }
+
+            population.clear();
+            population.addAll(successors);
+
+            //MUTATE
+            mutate();
+
+            successors.clear();
+        }
     }
 
     //Storing the fitness value for each population member
@@ -66,13 +81,11 @@ public class Genetic {
             fitness[i] = population.get(i).fitness();
             total += fitness[i];
         }
-
-        System.out.println(Arrays.toString(fitness));
     }
 
     public int[] selectParent(){
         int val = gen.nextInt(total);
-        int count = 0, decrement = 0;
+        int count = 0, decrement;
 
         while(count < population.size() - 1 && val > population.get(count).getWeight())
             ++count;
@@ -101,6 +114,20 @@ public class Genetic {
         }
 
         return child;
+    }
+
+    public void mutate(){
+        int t = 0;
+        for(int i = 0; i < population.size(); ++i){
+            t += population.get(i).fitness();
+        }
+
+        int avg = t / population.size();
+
+        for(int j = 0; j < population.size(); ++j){
+            if(gen.nextBoolean())
+                population.get(j).mutate();
+        }
     }
 
     /*

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by marco on 5/10/2017.
  */
@@ -41,7 +43,7 @@ public class NQueenBoard {
         for(int i = 0; i < board.length; ++i){
             for(int j = i + 1; j < board.length; ++j){
                 relation = j - i;
-                if(!(board[i] == board[j] || board[j] - relation == board[i] || board[j] + relation == board[i]))
+                if(!(board[i] == board[j]) && !(board[j] - relation == board[i]) && !(board[j] + relation == board[i]))
                     ++pairs;
             }
         }
@@ -60,5 +62,11 @@ public class NQueenBoard {
 
             System.out.println();
         }
+    }
+
+    public void mutate(){
+        Random gen = new Random();
+        board[gen.nextInt(board.length)] = gen.nextInt(board.length);
+        fitness = nonAttackingPairs();
     }
 }
