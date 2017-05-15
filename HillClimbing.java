@@ -7,6 +7,7 @@ import java.util.Collections;
 public class HillClimbing {
 
     private static int[] board;
+    private int cost = 0;
 
     public HillClimbing(int[] b){
         board = b;
@@ -18,7 +19,7 @@ public class HillClimbing {
     //If none is better than current h, quit
     //Else, take the best as new current and repeat
 
-    public static boolean solve(){
+    public boolean solve(){
         //The arraylist moves stores each different game board
         //attackingPairs stores the number of attacking queens per board
         ArrayList<int[]> moves = new ArrayList<>();
@@ -38,6 +39,7 @@ public class HillClimbing {
                         move[i] = j;
 
                         moves.add(move);
+                        ++cost;
                         attackingPairs.add(getAttackingPairs(move));
                     }
                 }
@@ -82,5 +84,9 @@ public class HillClimbing {
 
     public static int[] getBoard(){
         return board;
+    }
+
+    public int getCost(){
+        return cost;
     }
 }

@@ -61,7 +61,7 @@ public class Driver {
                 System.out.print("\nEnter the number of queens (N): ");
                 int n = reader.nextInt();
                 int count = 0;
-                long start, stop, time = 0;
+                long start, stop, time = 0, cost = 0;
 
                 System.out.println("Running 200 test cases.\n");
 
@@ -74,13 +74,14 @@ public class Driver {
                     if(hc.solve())
                         ++count;
 
+                    cost += hc.getCost();
                     stop = System.currentTimeMillis();
-
                     time += (stop - start);
                 }
 
                 System.out.println("Steepest hill climbing solved approximately " + (count / 2) + "% of problems.");
                 System.out.println("Average time: " + (time / 200.0) + " milliseconds");
+                System.out.println("Average boards generated (not all kept in memory): " + (cost / 200));
 
             }else{
                 if(sub != 3)
@@ -94,14 +95,14 @@ public class Driver {
         int n = -1;
 
         while(n < 4) {
-            System.out.print("Enter the number of queens (N): ");
+            System.out.print("\nEnter the number of queens (N): ");
             n = reader.nextInt();
         }
 
         int k = -1;
 
         while(k <= 3) {
-            System.out.print("\nEnter the size of the population for the algorithm: ");
+            System.out.print("Enter the size of the population for the algorithm: ");
             k = reader.nextInt();
         }
 
@@ -121,6 +122,7 @@ public class Driver {
         long stop = System.currentTimeMillis();
 
         System.out.println("Total time: " + (stop - start) + " milliseconds");
+        System.out.println("Epochs generated (generation count): " + g.getEpoch());
     }
 
     //Returns a randomly generated board

@@ -11,7 +11,7 @@ public class Genetic {
     //Dimension variable used to determine terminal state of algorithm (ideal fitness value)
 
     private ArrayList<NQueenBoard> population = new ArrayList<>();
-    private int total = 0, k, dimension;
+    private int total = 0, k, dimension, epoch = 0;
     private Random gen = new Random();
     Comparator<NQueenBoard> c = new GenerationSort();
 
@@ -20,6 +20,10 @@ public class Genetic {
         population = p;
         k = p.size();
         dimension = p.get(0).getBoard().length;
+    }
+
+    public int getEpoch(){
+        return epoch;
     }
 
     /*The Genetic Algorithm
@@ -59,6 +63,8 @@ public class Genetic {
 
             population.addAll(successors);
             successors.clear();
+
+            ++epoch;
         }
     }
 
