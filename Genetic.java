@@ -6,11 +6,8 @@ import java.util.*;
 public class Genetic {
 
     //Initial population of algorithm stored in array list
-    //Size variable stores the size of the population's elements
-    //The pairs array stores the number of non-attacking queens in the population boards
-    //The fitness array stores the fitness values for the members of the population
+    //K variable stores the size of the population's elements
     private ArrayList<NQueenBoard> population = new ArrayList<>();
-    private int[] pairs, fitness;
     private int total = 0, k, dimension;
     private Random gen = new Random();
 
@@ -19,8 +16,6 @@ public class Genetic {
         population = p;
         k = p.size();
         dimension = p.get(0).getBoard().length;
-        pairs = new int[p.size()];
-        fitness = new int[p.size()];
     }
 
     //The Genetic Algorithm
@@ -44,21 +39,7 @@ public class Genetic {
             for(int x = 0; x <= population.size() / 4; ++x)
                 population.remove(0);
 
-            //FIND A WAY TO POPULATE SUCCESSOR ARRAYLIST USING SELECTION
-            //CROSSOVER, AND MUTATION (start with the first two)
-            //RUN SINGLE CASE FIRST
-            while (successors.size() < k) {
-                int select = gen.nextInt(population.size());
-                int[] child;
-
-                if (gen.nextBoolean()) {
-                    child = crossover(parent1, population.get(select).getBoard()).clone();
-                } else {
-                    child = crossover(parent2, population.get(select).getBoard()).clone();
-                }
-
-                successors.add(new NQueenBoard(child));
-            }
+            selection(successors, parent1, parent2);
 
             population.clear();
             Comparator<NQueenBoard> c = new GenerationSort();
@@ -83,8 +64,7 @@ public class Genetic {
 
         for(int i = 0; i < population.size(); ++i) {
             population.get(i).setWeight(total);
-            fitness[i] = population.get(i).fitness();
-            total += fitness[i];
+            total += population.get(i).fitness();
         }
     }
 
@@ -106,6 +86,21 @@ public class Genetic {
         return childBoard;
     }
 
+    public void selection(ArrayList<NQueenBoard> successors, int[] parent1, int[] parent2){
+        while (successors.size() < k) {
+            int select = gen.nextInt(population.size());
+            int[] child;
+
+            if (gen.nextBoolean()) {
+                child = crossover(parent1, population.get(select).getBoard()).clone();
+            } else {
+                child = crossover(parent2, population.get(select).getBoard()).clone();
+            }
+
+            successors.add(new NQueenBoard(child));
+        }
+    }
+
     public int[] crossover(int[] a1, int[] a2){
         int point = gen.nextInt(a1.length);
         int[] child = new int[a1.length];
@@ -125,19 +120,4 @@ public class Genetic {
         for(int j = 0; j < successors.size() / 4; ++j)
             successors.get(j).mutate();
     }
-
-    /*
-    * Production of a child requires selection, cross-over, mutation
-    * The population for following iterations of the algorithm consists of
-    * children of the current iteration.
-    *
-    * +HOW ARE THE POTENTIAL PARENTS CHOSEN? DOES THE FITTEST PARENT REPRODUCE
-    *   WITH THE FOLLOWING TWO WHILE THE LEAST FIT IS DISCARDED? OR ARE THEY
-    *   RANDOMLY PAIRED?
-    *
-    * +SELECTION HAPPENS AT RANDOMLY CHOSEN POINT?
-    *
-    * +HOW EXACTLY DOES THE MUTATION WORK?
-    *   +WHAT DOES "IF SMALL RANDOM PROBABILITY" MEAN?
-    * */
 }
