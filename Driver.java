@@ -72,7 +72,8 @@ public class Driver {
 
                 System.out.println("Steepest hill climbing solved approximately " + (count / 2) + "% of problems.");
             }else{
-                System.out.println("Please enter a valid option.");
+                if(sub != 3)
+                    System.out.println("Please enter a valid option.");
             }
         }
     }
