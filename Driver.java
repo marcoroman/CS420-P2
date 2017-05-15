@@ -48,10 +48,11 @@ public class Driver {
                 HillClimbing hc = new HillClimbing(board);
 
                 print(board);
+                System.out.println("Original board.");
 
                 if(hc.solve()){
                     print(hc.getBoard());
-                    System.out.println("Solution found.");
+                    System.out.println("Solution found!");
                 }else
                     System.out.println("Steepest hill-climbing failed to find a solution.");
             //Option for running 200 test cases (displays percent of solved cases)
@@ -119,6 +120,8 @@ public class Driver {
     //Translates N-Queen board represented as an array of integers
     //to a visual representation with Q's indicating a queen
     public static void print(int[] board){
+        System.out.println();
+
         for(int i = 0; i < board.length; ++i){
             for(int j = 0; j < board.length; ++j){
                 if(i == board[j]){
