@@ -13,13 +13,7 @@ public class NQueenBoard {
         fitness = nonAttackingPairs();
     }
 
-    public int fitness(){
-        return fitness;
-    }
-
-    public int[] getBoard(){
-        return board;
-    }
+    /***************************************Mutators***************************************/
 
     public void setWeight(int w){
         weight = w;
@@ -29,9 +23,21 @@ public class NQueenBoard {
         weight -= d;
     }
 
+    /***************************************Accessors***************************************/
+
+    public int fitness(){
+        return fitness;
+    }
+
+    public int[] getBoard(){
+        return board;
+    }
+
     public int getWeight(){
         return weight;
     }
+
+    /***************************************Auxiliary Methods***************************************/
 
     //Returns number of NON-attacking queen pairs in the boards in the population
     public int nonAttackingPairs(){
@@ -51,19 +57,8 @@ public class NQueenBoard {
         return pairs;
     }
 
-    public void print(){
-        for(int i = 0; i < board.length; ++i){
-            for(int j = 0; j < board.length; ++j){
-                if(i == board[j]){
-                    System.out.print('Q' + " ");
-                }else
-                    System.out.print("*" + " ");
-            }
-
-            System.out.println();
-        }
-    }
-
+    //Causes a mutation in the board by randomly selecting a queen and moving it
+    //to a random position withinin its column
     public void mutate(){
         Random gen = new Random();
         board[gen.nextInt(board.length)] = gen.nextInt(board.length);

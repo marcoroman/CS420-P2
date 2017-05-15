@@ -31,6 +31,7 @@ public class Driver {
         reader.close();
     }
 
+    //Handles the steepest hill climbing option
     public static void hillClimbing(Scanner reader){
         int sub = -1;
 
@@ -38,6 +39,7 @@ public class Driver {
             System.out.print("\n1) Solve single N-Queen problem (may fail)\n2) Run 200 cases\n3) Back\n>");
             sub = reader.nextInt();
 
+            //Option for attempting to solve a single case
             if(sub == 1){
                 System.out.print("\nEnter number of queens (N): ");
                 int n = reader.nextInt();
@@ -51,11 +53,14 @@ public class Driver {
                     print(hc.getBoard());
                     System.out.println("Solution found.");
                 }else
-                    System.out.println("Hill climbing failed to find a solution.");
+                    System.out.println("Steepest hill-climbing failed to find a solution.");
+            //Option for running 200 test cases (displays percent of solved cases)
             }else if(sub == 2){
                 System.out.print("\nEnter the number of queens (N): ");
                 int n = reader.nextInt();
                 int count = 0;
+
+                System.out.println("Running 200 cases.\n");
 
                 for(int i = 0; i < 200; ++i){
                     int[] board = createBoard(n);
@@ -65,16 +70,21 @@ public class Driver {
                         ++count;
                 }
 
-                System.out.println("Hill climbing solved approximately " + (count / 2) + "% of problems.");
+                System.out.println("Steepest hill climbing solved approximately " + (count / 2) + "% of problems.");
             }else{
                 System.out.println("Please enter a valid option.");
             }
         }
     }
 
+    //Handles the genetic algorithm option
     public static void geneticAlgorithm(Scanner reader){
-        System.out.print("Enter the number of queens (N): ");
-        int n = reader.nextInt();
+        int n = -1;
+
+        while(n < 4) {
+            System.out.print("Enter the number of queens (N): ");
+            n = reader.nextInt();
+        }
 
         int k = -1;
 
@@ -83,6 +93,7 @@ public class Driver {
             k = reader.nextInt();
         }
 
+        //Populating the initial population with randomly generated boards
         ArrayList<NQueenBoard> p = new ArrayList<>();
 
         for(int i = 0; i < k; ++i){
@@ -93,6 +104,7 @@ public class Driver {
         g.solve();
     }
 
+    //Returns a randomly generated board
     public static int[] createBoard(int size){
         Random gen = new Random();
         int[] board = new int[size];
@@ -103,6 +115,8 @@ public class Driver {
         return board;
     }
 
+    //Translates N-Queen board represented as an array of integers
+    //to a visual representation with Q's indicating a queen
     public static void print(int[] board){
         for(int i = 0; i < board.length; ++i){
             for(int j = 0; j < board.length; ++j){

@@ -6,7 +6,10 @@ import java.util.*;
 public class Genetic {
 
     //Initial population of algorithm stored in array list
+    //Total variable used to for random selection of parents
     //K variable stores the size of the population's elements
+    //Dimension variable used to determine terminal state of algorithm (ideal fitness value)
+
     private ArrayList<NQueenBoard> population = new ArrayList<>();
     private int total = 0, k, dimension;
     private Random gen = new Random();
@@ -18,7 +21,14 @@ public class Genetic {
         dimension = p.get(0).getBoard().length;
     }
 
-    //The Genetic Algorithm
+    /*The Genetic Algorithm
+        -Determine the fitness of all members of the population
+        -Randomly select two members to be parents of next generation
+        -Remove the least fit 25% of the population
+        -Populate successor generation by crossing parents over with the remaining members
+        -Apply random mutations to the least fit 25% of the successor generation
+        -Repeat until the ideally fit individual is produced
+     */
     public void solve(){
         ArrayList<NQueenBoard> successors = new ArrayList<>();
         int[] parent1, parent2;
@@ -45,7 +55,6 @@ public class Genetic {
             Comparator<NQueenBoard> c = new GenerationSort();
             Collections.sort(successors, c);
 
-            //MUTATE
             mutate(successors);
 
             population.addAll(successors);
@@ -54,8 +63,8 @@ public class Genetic {
     }
 
     //Storing the fitness value for each population member
-    //These proportions represent the board's probability of being
-    //Chosen for reproduction
+    //The weights represent the board's probability of being
+    //Chosen for being parents of the next generation
     public void fitnessFunction(){
         total = 0;
 
@@ -68,6 +77,8 @@ public class Genetic {
         }
     }
 
+    //Selecting the parents of the next generation fitter members
+    //are more likely to be chosen than unfit members
     public int[] selectParent(){
         int val = gen.nextInt(total);
         int count = 0, decrement;
@@ -75,7 +86,9 @@ public class Genetic {
         while(count < population.size() - 1 && val > population.get(count).getWeight())
             ++count;
 
-        int[] childBoard = population.get(count).getBoard();
+        int[] parentBoard = population.get(count).getBoard();
+
+        //These decrements are applied to keep the probabilities consistent
         decrement = population.get(count).fitness();
         total -= decrement;
         population.remove(count);
@@ -83,9 +96,11 @@ public class Genetic {
         for(int i = count + 1; i < population.size(); ++i)
             population.get(i).decrementWeight(decrement);
 
-        return childBoard;
+        return parentBoard;
     }
 
+    //Simulates the "reproduction" of the parent boards with randomly chosen
+    //members of the population
     public void selection(ArrayList<NQueenBoard> successors, int[] parent1, int[] parent2){
         while (successors.size() < k) {
             int select = gen.nextInt(population.size());
@@ -101,6 +116,9 @@ public class Genetic {
         }
     }
 
+    //This method performs the actual combination of board states
+    //that is used to produce the new generation. The crossover
+    //point is randomly chosen.
     public int[] crossover(int[] a1, int[] a2){
         int point = gen.nextInt(a1.length);
         int[] child = new int[a1.length];
@@ -116,6 +134,7 @@ public class Genetic {
         return child;
     }
 
+    //Applies mutations to the least fit 25% of the population
     public void mutate(ArrayList<NQueenBoard> successors){
         for(int j = 0; j < successors.size() / 4; ++j)
             successors.get(j).mutate();
