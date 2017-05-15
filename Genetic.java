@@ -11,13 +11,14 @@ public class Genetic {
     //The fitness array stores the fitness values for the members of the population
     private ArrayList<NQueenBoard> population = new ArrayList<>();
     private int[] pairs, fitness;
-    private int total = 0, k;
+    private int total = 0, k, dimension;
     private Random gen = new Random();
 
     //Constructor; initializing class members
     public Genetic(ArrayList<NQueenBoard> p){
         population = p;
         k = p.size();
+        dimension = p.get(0).getBoard().length;
         pairs = new int[p.size()];
         fitness = new int[p.size()];
     }
@@ -30,7 +31,7 @@ public class Genetic {
         while(true) {
             fitnessFunction();
 
-            if(population.get(k - 1).fitness() == 28){
+            if(population.get(k - 1).fitness() == (int) (dimension * ((dimension - 1) / 2.0))){
                 Driver.print(population.get(k - 1).getBoard());
                 break;
             }
@@ -81,6 +82,8 @@ public class Genetic {
             fitness[i] = population.get(i).fitness();
             total += fitness[i];
         }
+
+        System.out.println(Arrays.toString(fitness));
     }
 
     public int[] selectParent(){
