@@ -7,7 +7,6 @@ import java.util.Collections;
 public class HillClimbing {
 
     private static int[] board;
-    //private static int pairs = 0;
 
     public HillClimbing(int[] b){
         board = b;

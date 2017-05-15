@@ -13,6 +13,7 @@ public class Genetic {
     private ArrayList<NQueenBoard> population = new ArrayList<>();
     private int total = 0, k, dimension;
     private Random gen = new Random();
+    Comparator<NQueenBoard> c = new GenerationSort();
 
     //Constructor; initializing class members
     public Genetic(ArrayList<NQueenBoard> p){
@@ -52,7 +53,6 @@ public class Genetic {
             selection(successors, parent1, parent2);
 
             population.clear();
-            Comparator<NQueenBoard> c = new GenerationSort();
             Collections.sort(successors, c);
 
             mutate(successors);
@@ -62,13 +62,14 @@ public class Genetic {
         }
     }
 
+    /*****************************************Fitness functions*****************************************/
+
     //Storing the fitness value for each population member
     //The weights represent the board's probability of being
     //Chosen for being parents of the next generation
     public void fitnessFunction(){
         total = 0;
 
-        Comparator<NQueenBoard> c = new GenerationSort();
         Collections.sort(population, c);
 
         for(int i = 0; i < population.size(); ++i) {
@@ -98,6 +99,8 @@ public class Genetic {
 
         return parentBoard;
     }
+
+    /*****************************************Selection, Crossover, Mutation*****************************************/
 
     //Simulates the "reproduction" of the parent boards with randomly chosen
     //members of the population
