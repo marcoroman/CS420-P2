@@ -23,6 +23,14 @@ public class NQueenBoard {
         weight = w;
     }
 
+    public void decrementWeight(int d){
+        weight -= d;
+    }
+
+    public int getWeight(){
+        return weight;
+    }
+
     //Returns number of NON-attacking queen pairs in the boards in the population
     public int nonAttackingPairs(){
         int pairs = 0;
