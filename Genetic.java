@@ -61,12 +61,11 @@ public class Genetic {
             }
 
             population.clear();
-            //population.addAll(successors);
             Comparator<NQueenBoard> c = new GenerationSort();
             Collections.sort(successors, c);
 
             //MUTATE
-            mutate();
+            mutate(successors);
 
             population.addAll(successors);
             successors.clear();
@@ -86,11 +85,7 @@ public class Genetic {
             population.get(i).setWeight(total);
             fitness[i] = population.get(i).fitness();
             total += fitness[i];
-            if(fitness[i] > 200)
-                System.out.println(fitness[i]);
         }
-
-        //System.out.println(Arrays.toString(fitness));
     }
 
     public int[] selectParent(){
@@ -126,16 +121,9 @@ public class Genetic {
         return child;
     }
 
-    public void mutate(){
-        int t = 0;
-        for(int i = 0; i < population.size(); ++i){
-            t += population.get(i).fitness();
-        }
-
-        for(int j = 0; j < population.size(); ++j){
-            if(gen.nextBoolean())
-                population.get(j).mutate();
-        }
+    public void mutate(ArrayList<NQueenBoard> successors){
+        for(int j = 0; j < successors.size() / 4; ++j)
+            successors.get(j).mutate();
     }
 
     /*
