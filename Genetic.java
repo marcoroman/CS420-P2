@@ -40,7 +40,9 @@ public class Genetic {
             parent2 = selectParent().clone();
 
             successors.add(new NQueenBoard(crossover(parent1, parent2)));
-            population.remove(0);
+
+            for(int x = 0; x <= population.size() / 4; ++x)
+                population.remove(0);
 
             //FIND A WAY TO POPULATE SUCCESSOR ARRAYLIST USING SELECTION
             //CROSSOVER, AND MUTATION (start with the first two)
@@ -59,11 +61,14 @@ public class Genetic {
             }
 
             population.clear();
-            population.addAll(successors);
+            //population.addAll(successors);
+            Comparator<NQueenBoard> c = new GenerationSort();
+            Collections.sort(successors, c);
 
             //MUTATE
             mutate();
 
+            population.addAll(successors);
             successors.clear();
         }
     }
@@ -81,9 +86,11 @@ public class Genetic {
             population.get(i).setWeight(total);
             fitness[i] = population.get(i).fitness();
             total += fitness[i];
+            if(fitness[i] > 200)
+                System.out.println(fitness[i]);
         }
 
-        System.out.println(Arrays.toString(fitness));
+        //System.out.println(Arrays.toString(fitness));
     }
 
     public int[] selectParent(){
@@ -124,8 +131,6 @@ public class Genetic {
         for(int i = 0; i < population.size(); ++i){
             t += population.get(i).fitness();
         }
-
-        int avg = t / population.size();
 
         for(int j = 0; j < population.size(); ++j){
             if(gen.nextBoolean())

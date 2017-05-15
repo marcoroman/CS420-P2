@@ -14,7 +14,7 @@ public class Driver {
         ArrayList<NQueenBoard> p = new ArrayList<>();
 
         for(int i = 0; i < 10; ++i){
-            p.add(new NQueenBoard(createBoard(8)));
+            p.add(new NQueenBoard(createBoard(21)));
         }
 
         Genetic g = new Genetic(p);
